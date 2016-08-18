@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bluetooth Volume Adapter</string>
+
+    <!-- Edit Device Behavior -->
+    <string name="edb_title">Edit device</string>
+    <string name="activate_device">Activate device</string>
+    <string name="remember_last_volume">Remember last volume</string>
+    <string name="volume">Volume</string>
+</resources>
