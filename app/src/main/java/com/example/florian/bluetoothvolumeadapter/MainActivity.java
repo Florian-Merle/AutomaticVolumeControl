@@ -2,17 +2,15 @@ package com.example.florian.bluetoothvolumeadapter;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Set;
 
@@ -27,13 +25,19 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter mPairedDevicesArrayAdapter;
     private ListView mPairedDevicesListView;
 
-    public MainActivity() {
-    }
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* tool bar */
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setIcon(R.drawable.ic_toolbar_icon);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 

@@ -1,10 +1,13 @@
 package com.example.florian.bluetoothvolumeadapter;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -17,7 +20,7 @@ import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
 /**
  * Created by Florian on 11/08/2016.
  */
-public class EditDeviceBehaviorActivity extends Activity {
+public class EditDeviceBehaviorActivity extends AppCompatActivity {
     private TextView mDeviceNameView;
     private SeekBar mVolumeSeekbar;
     private Switch mActivateDeviceSwitch;
@@ -27,6 +30,8 @@ public class EditDeviceBehaviorActivity extends Activity {
     private DeviceOptions mDevice;
 
     private int mDefaultVolumeValue = 50;
+
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +53,16 @@ public class EditDeviceBehaviorActivity extends Activity {
         }
 
         // INITIALIZE STUFF
-        mDeviceNameView = (TextView) findViewById(R.id.deviceName);
-        mDeviceNameView.setText(mDevice.getName());
-        mDeviceNameView.invalidate();
+        /* tool bar */
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
+        getSupportActionBar().setTitle(R.string.edb_title);
+        getSupportActionBar().setSubtitle(mDevice.getName());
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /* other stuff */
         mVolumeSeekbar = (SeekBar) findViewById(R.id.volumeSeekBar);
         mVolumeSeekbar.setProgress(mDevice.getVolume());
         mVolumeSeekbar.setMax(100);
