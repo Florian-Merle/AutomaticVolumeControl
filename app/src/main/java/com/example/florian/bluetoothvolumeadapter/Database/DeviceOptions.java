@@ -1,17 +1,17 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.example.florian.bluetoothvolumeadapter.Database;
 
 /**
  * Created by Florian on 11/08/2016.
  */
 public class DeviceOptions {
-    String adresse;
+    String adress;
     String name;
     int activated;
     int rememberLastVolume;
     int volume;
 
     public DeviceOptions(String a, String n) {
-        adresse = a;
+        adress = a;
         name = n;
     }
 
@@ -25,8 +25,8 @@ public class DeviceOptions {
         volume = v;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public String getAdress() {
+        return adress;
     }
     public String getName() {
         return name;

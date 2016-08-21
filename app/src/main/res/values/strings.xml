@@ -6,4 +6,9 @@
     <string name="activate_device">Activate device</string>
     <string name="remember_last_volume">Remember last volume</string>
     <string name="volume">Volume</string>
+
+    <!-- Service -->
+    <string name="service_started">BVA has started</string>
+    <string name="connected_to">Connected to</string>
+    <string name="disconnected_from">Disconnected from</string>
 </resources>

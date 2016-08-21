@@ -2,6 +2,8 @@ package com.example.florian.bluetoothvolumeadapter;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         mPairedDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
         searchPairedDevices();
+
+        //START SERVICE IF NOT STARTED
+        Intent i = new Intent(this, BluetoothWatchService.class);
+        this.startService(i);
     }
 
     @Override

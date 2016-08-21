@@ -1,9 +1,8 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.example.florian.bluetoothvolumeadapter.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by Florian on 11/08/2016.
@@ -18,7 +17,7 @@ public class DeviceDAO extends DAOBase{
     public long insert(DeviceOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdresse());
+        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdress());
         values.put(DevicesDatabaseHandler.DEVICE_NAME, d.getName());
         values.put(DevicesDatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
         values.put(DevicesDatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
@@ -34,13 +33,19 @@ public class DeviceDAO extends DAOBase{
     public int update(DeviceOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdresse());
+        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdress());
         values.put(DevicesDatabaseHandler.DEVICE_NAME, d.getName());
         values.put(DevicesDatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
         values.put(DevicesDatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
         values.put(DevicesDatabaseHandler.DEVICE_VOLUME, d.getVolume());
 
-        return mDb.update(DevicesDatabaseHandler.DEVICE_TABLE_NAME, values, DevicesDatabaseHandler.DEVICE_ADRESS + " = " +d.getAdresse(), null);
+        String where = DevicesDatabaseHandler.DEVICE_ADRESS + " = ?";
+        String[] whereArgs = {d.getAdress() };
+
+        return mDb.update(DevicesDatabaseHandler.DEVICE_TABLE_NAME,
+                values,
+                where,
+                whereArgs);
     }
 
     public DeviceOptions select(String id) {
@@ -61,10 +66,10 @@ public class DeviceDAO extends DAOBase{
 
         c.moveToFirst();
 
-        DeviceOptions d = new DeviceOptions(c.getString(1), c.getString(2));
-        d.setVolume(c.getInt(5));
-        d.setActivated(c.getInt(3));
-        d.setRememberLastVolume(c.getInt(4));
+        DeviceOptions d = new DeviceOptions(c.getString(0), c.getString(1));
+        d.setActivated(c.getInt(2));
+        d.setRememberLastVolume(c.getInt(3));
+        d.setVolume(c.getInt(4));
 
         c.close();
         return d;
