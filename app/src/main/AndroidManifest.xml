@@ -24,6 +24,11 @@
                 android:value=".MainActivity"/>
         </activity>
 
+        <activity android:name=".SettingsActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
         <service android:name=".BluetoothWatchService"/>
 
         <!-- Declaring broadcast receiver for BOOT_COMPLETED event -->

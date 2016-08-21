@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/showUi">
+        <CheckBoxPreference
+            android:title="@string/showToast"
+            android:summary="@string/showToastSum"
+            android:key="show_toasts"/>
+
+        <CheckBoxPreference
+            android:title="@string/showAudioManagerUI"
+            android:summary="@string/showAudioManagerUISum"
+            android:key="show_am_ui"/>
+    </PreferenceCategory>
+</PreferenceScreen>

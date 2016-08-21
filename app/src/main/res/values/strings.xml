@@ -11,4 +11,12 @@
     <string name="service_started">BVA has started</string>
     <string name="connected_to">Connected to</string>
     <string name="disconnected_from">Disconnected from</string>
+
+    <!-- preferences -->
+    <string name="settings">Settings</string>
+    <string name="showUi">Show UI</string>
+    <string name="showToast">Toast</string>
+    <string name="showToastSum">Display when a device is connected or disconnected</string>
+    <string name="showAudioManagerUI">Audio Manager</string>
+    <string name="showAudioManagerUISum">Show Audio Manager UI</string>
 </resources>
