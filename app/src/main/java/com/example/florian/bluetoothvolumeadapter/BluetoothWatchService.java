@@ -112,7 +112,6 @@ public class BluetoothWatchService extends Service {
         boolean showToasts = prefs.getBoolean("show_toasts", false);
         if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
 
-
         mDeviceDAO = new DeviceDAO(this);
         mDeviceDAO.open();
 
@@ -121,6 +120,12 @@ public class BluetoothWatchService extends Service {
 
         if(device.getActivated() == 0) {
             return;
+        }
+
+        if(device.getRememberLastVolume() ==  1) {
+            int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            device.setVolume(v);
+            mDeviceDAO.update(device);
         }
 
         int volume = getLastVolume();
