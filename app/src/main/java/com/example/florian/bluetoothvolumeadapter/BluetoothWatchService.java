@@ -96,7 +96,7 @@ public class BluetoothWatchService extends Service {
         int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         saveLastVolume(v);
 
-        int volume = (device.getVolume() * mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)) / 100;
+        int volume = device.getVolume();
 
         int flag = 0;
         if(prefs.getBoolean("show_am_ui", false)) {

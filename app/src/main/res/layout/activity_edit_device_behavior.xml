@@ -22,7 +22,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activate_device"/>
+            android:text="@string/activate_device"
+            android:textSize="17sp"/>
 
         <Switch
             android:layout_width="wrap_content"
@@ -32,7 +33,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/remember_last_volume"/>
+            android:text="@string/remember_last_volume"
+            android:textSize="17sp"/>
 
         <Switch
             android:layout_width="wrap_content"
@@ -42,6 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="17sp"
             android:text="@string/volume"/>
 
         <SeekBar

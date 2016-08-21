@@ -12,4 +12,7 @@
         android:layout_gravity="end"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:onClick="action_settings"/>
+    <!--
+    TODO add "focus" for ImageButton because when clicked, it doesn't act like a normal button: like it is not focused
+    -->
 </android.support.v7.widget.Toolbar>

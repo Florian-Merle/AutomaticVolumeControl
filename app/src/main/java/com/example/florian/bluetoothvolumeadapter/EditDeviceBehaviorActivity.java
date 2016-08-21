@@ -29,7 +29,7 @@ public class EditDeviceBehaviorActivity extends AppCompatActivity {
     private DeviceDAO mDeviceDAO;
     private DeviceOptions mDevice;
 
-    private int mDefaultVolumeValue = 50;
+    private int mDefaultVolumeValue = 0;
 
     private Toolbar mToolbar;
 
@@ -65,7 +65,10 @@ public class EditDeviceBehaviorActivity extends AppCompatActivity {
         /* other stuff */
         mVolumeSeekbar = (SeekBar) findViewById(R.id.volumeSeekBar);
         mVolumeSeekbar.setProgress(mDevice.getVolume());
-        mVolumeSeekbar.setMax(100);
+
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mVolumeSeekbar.setMax(max);
         mVolumeSeekbar.invalidate();
 
         mActivateDeviceSwitch = (Switch) findViewById(R.id.activateDevice);
