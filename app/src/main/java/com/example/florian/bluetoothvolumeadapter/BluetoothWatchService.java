@@ -17,7 +17,6 @@ import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
 import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
