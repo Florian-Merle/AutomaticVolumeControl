@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -26,7 +25,7 @@ import java.io.IOException;
  * Created by Florian on 20/08/2016.
  */
 public class BluetoothWatchService extends Service {
-    public static final String STORAGE_FILE = "volume_file";
+    public static final String STORAGE_FILE = "BVA_volume_file";
 
     private DeviceDAO mDeviceDAO;
     private AudioManager mAudioManager;
@@ -41,12 +40,13 @@ public class BluetoothWatchService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show();
 
-        IntentFilter connectFilter = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-        this.registerReceiver(mReceiver, connectFilter);
-
+        IntentFilter filter = new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
+        filter.addAction(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED);
+        this.registerReceiver(mReceiver, filter);
+/*
         IntentFilter disconnectFilter  = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         this.registerReceiver(mReceiver, disconnectFilter);
-
+*/
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         return START_STICKY;
@@ -65,16 +65,28 @@ public class BluetoothWatchService extends Service {
 
     //bluetooth broadcast receiver
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public boolean mConnected = false;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             BluetoothDevice d = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                deviceConnected(d);
+            if(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED.equals(action)) {
+                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                if(state == BluetoothA2dp.STATE_PLAYING) {
+                    if (mConnected == false) {
+                        deviceConnected(d);
+                        mConnected = true;
+                    }
+                }
             }
-            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                deviceDisconnected(d);
+            else if(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
+                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                if(state == BluetoothA2dp.STATE_DISCONNECTED) {
+                    mConnected = false;
+                    changeVolumeBack(d);
+                }
             }
         }
     };
@@ -104,22 +116,12 @@ public class BluetoothWatchService extends Service {
             flag = AudioManager.FLAG_SHOW_UI;
         }
 
-
-        //TODO find a cleaner solution
-        final Handler handler = new Handler();
-        final int finalVolume = volume;
-        final int finalFlag = flag;
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                        finalVolume,
-                        finalFlag);
-            }
-        }, 3500);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                volume,
+                flag);
     }
 
-    private void deviceDisconnected(BluetoothDevice bluetoothDevice) {
+    private void changeVolumeBack(BluetoothDevice bluetoothDevice) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean showToasts = prefs.getBoolean("show_toasts", false);
         if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
@@ -134,14 +136,6 @@ public class BluetoothWatchService extends Service {
             return;
         }
 
-        //TODO fix the "remember volume": it's like it goes too quick and select the "volume on the phone" and not on bluetooth, it seems to be the same issue I have when I set the volume when a device is connected.
-        //I think I have to replace AudioManager.STREAM_MUSIC by something, I found on the internet I can change it by "6" --> for bluetooth volume (not documented) but it doesn't really work
-        if(device.getRememberLastVolume() ==  1) {
-            int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            device.setVolume(v);
-            mDeviceDAO.update(device);
-        }
-
         int volume = getLastVolume();
 
         int flag = 0;
@@ -151,6 +145,28 @@ public class BluetoothWatchService extends Service {
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
                 volume,
                 flag);
+    }
+
+    private void saveDeviceVolume(BluetoothDevice bluetoothDevice) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean showToasts = prefs.getBoolean("show_toasts", false);
+        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
+
+        mDeviceDAO = new DeviceDAO(this);
+        mDeviceDAO.open();
+
+        DeviceOptions device = mDeviceDAO.select(bluetoothDevice.getAddress());
+        if (device == null) { return; }
+
+        if(device.getActivated() == 0) {
+            return;
+        }
+
+       if(device.getRememberLastVolume() ==  1) {
+            int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            device.setVolume(v);
+            mDeviceDAO.update(device);
+        }
     }
 
     private void saveLastVolume(int v) {
