@@ -1,6 +1,7 @@
 package com.example.florian.bluetoothvolumeadapter;
 
 import android.app.Service;
+import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -101,9 +103,20 @@ public class BluetoothWatchService extends Service {
         if(prefs.getBoolean("show_am_ui", false)) {
             flag = AudioManager.FLAG_SHOW_UI;
         }
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                volume,
-                flag);
+
+
+        //TODO find a cleaner solution
+        final Handler handler = new Handler();
+        final int finalVolume = volume;
+        final int finalFlag = flag;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                        finalVolume,
+                        finalFlag);
+            }
+        }, 3500);
     }
 
     private void deviceDisconnected(BluetoothDevice bluetoothDevice) {
@@ -121,6 +134,8 @@ public class BluetoothWatchService extends Service {
             return;
         }
 
+        //TODO fix the "remember volume": it's like it goes too quick and select the "volume on the phone" and not on bluetooth, it seems to be the same issue I have when I set the volume when a device is connected.
+        //I think I have to replace AudioManager.STREAM_MUSIC by something, I found on the internet I can change it by "6" --> for bluetooth volume (not documented) but it doesn't really work
         if(device.getRememberLastVolume() ==  1) {
             int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             device.setVolume(v);

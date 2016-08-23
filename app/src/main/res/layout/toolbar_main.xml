@@ -13,6 +13,6 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:onClick="action_settings"/>
     <!--
-    TODO add "focus" for ImageButton because when clicked, it doesn't act like a normal button: like it is not focused
+    TODO add a focus effect to the imagebutton
     -->
 </android.support.v7.widget.Toolbar>

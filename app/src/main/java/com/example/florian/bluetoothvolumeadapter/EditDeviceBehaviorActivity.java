@@ -33,6 +33,8 @@ public class EditDeviceBehaviorActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
+    //TODO When the volume is updated and the user is in this activity, it should change the seekbar
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

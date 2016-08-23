@@ -9,6 +9,7 @@
     <include layout="@layout/toolbar_main"
         android:id="@+id/toolbar"/>
 
+    <!-- TODO need to have cleaner list view elements: the first line should be bigger thant the second -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
