@@ -21,7 +21,6 @@ import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
  * Created by Florian on 11/08/2016.
  */
 public class EditDeviceBehaviorActivity extends AppCompatActivity {
-    private TextView mDeviceNameView;
     private SeekBar mVolumeSeekbar;
     private Switch mActivateDeviceSwitch;
     private Switch mRememberVolumeSwitch;

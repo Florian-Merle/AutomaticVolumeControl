@@ -38,15 +38,9 @@ public class BluetoothWatchService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show();
-
         IntentFilter filter = new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
         filter.addAction(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED);
         this.registerReceiver(mReceiver, filter);
-/*
-        IntentFilter disconnectFilter  = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        this.registerReceiver(mReceiver, disconnectFilter);
-*/
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         return START_STICKY;
@@ -85,7 +79,7 @@ public class BluetoothWatchService extends Service {
                 int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
                 if(state == BluetoothA2dp.STATE_DISCONNECTED) {
                     mConnected = false;
-                    changeVolumeBack(d);
+                    deviceDisconnected(d);
                 }
             }
         }
@@ -121,10 +115,10 @@ public class BluetoothWatchService extends Service {
                 flag);
     }
 
-    private void changeVolumeBack(BluetoothDevice bluetoothDevice) {
+    private void deviceDisconnected(BluetoothDevice bluetoothDevice) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean showToasts = prefs.getBoolean("show_toasts", false);
-        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
+        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from), Toast.LENGTH_SHORT).show(); }
 
         mDeviceDAO = new DeviceDAO(this);
         mDeviceDAO.open();
@@ -136,6 +130,14 @@ public class BluetoothWatchService extends Service {
             return;
         }
 
+        //save volume
+        if(device.getRememberLastVolume() ==  1) {
+            int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            device.setVolume(v);
+            mDeviceDAO.update(device);
+        }
+
+        //change volume back
         int volume = getLastVolume();
 
         int flag = 0;
@@ -149,8 +151,6 @@ public class BluetoothWatchService extends Service {
 
     private void saveDeviceVolume(BluetoothDevice bluetoothDevice) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean showToasts = prefs.getBoolean("show_toasts", false);
-        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
 
         mDeviceDAO = new DeviceDAO(this);
         mDeviceDAO.open();
@@ -162,11 +162,7 @@ public class BluetoothWatchService extends Service {
             return;
         }
 
-       if(device.getRememberLastVolume() ==  1) {
-            int v = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            device.setVolume(v);
-            mDeviceDAO.update(device);
-        }
+
     }
 
     private void saveLastVolume(int v) {
