@@ -149,22 +149,6 @@ public class BluetoothWatchService extends Service {
                 flag);
     }
 
-    private void saveDeviceVolume(BluetoothDevice bluetoothDevice) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        mDeviceDAO = new DeviceDAO(this);
-        mDeviceDAO.open();
-
-        DeviceOptions device = mDeviceDAO.select(bluetoothDevice.getAddress());
-        if (device == null) { return; }
-
-        if(device.getActivated() == 0) {
-            return;
-        }
-
-
-    }
-
     private void saveLastVolume(int v) {
         try {
             FileOutputStream fos = openFileOutput(STORAGE_FILE, Context.MODE_PRIVATE);
