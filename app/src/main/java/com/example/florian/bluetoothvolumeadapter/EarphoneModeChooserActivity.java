@@ -28,8 +28,6 @@ public class EarphoneModeChooserActivity extends Activity {
     private List<EarphoneModeOptions> mEarphoneModeList;
     private ArrayAdapter<Object> mEarphoneModesArrayAdapter;
 
-    //TODO when closing activity, it doesn't get back to the right activity
-
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earphone_mode_chooser);
@@ -65,7 +63,7 @@ public class EarphoneModeChooserActivity extends Activity {
                     emo.getVolume(),
                     flag);
 
-            finish();
+            stop();
         }
     };
 
@@ -79,5 +77,9 @@ public class EarphoneModeChooserActivity extends Activity {
         }
 
         mEarphoneModesListView.setAdapter(mEarphoneModesArrayAdapter);
+    }
+
+    private void stop() {
+        this.finishAffinity();
     }
 }

@@ -41,6 +41,8 @@ public class earphoneProfilesListFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
 
+    //TODO if earphones connected and switch set from disable to enable --> create notification
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- //TODO tablet mode -->
+
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,13 +20,11 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_settings"
+            android:src="@drawable/ic_action_settings"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_gravity="end"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:onClick="action_settings"/>
-        <!--
-        TODO add a focus effect to the imagebutton
-        -->
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
