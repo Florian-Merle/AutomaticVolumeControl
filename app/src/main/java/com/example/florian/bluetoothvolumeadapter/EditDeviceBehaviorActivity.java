@@ -33,6 +33,7 @@ public class EditDeviceBehaviorActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
     //TODO When the volume is updated and the user is in this activity, it should change the seekbar
+    //TODO editing the device should be in a dialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

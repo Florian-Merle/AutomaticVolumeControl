@@ -40,6 +40,8 @@ public class BluetoothWatchService extends Service {
     private EarphoneModeDAO mEarphoneModeDAO;
     private boolean mConnected = false;
 
+    private NotificationManager mNotificationManager;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -93,37 +95,45 @@ public class BluetoothWatchService extends Service {
                 }
             }
             else if(Intent.ACTION_HEADSET_PLUG.equals(action)) {
-                //TODO check if user has activated the option
-                int state = intent.getIntExtra("state", -1);
-                if(state >= 1) {
-                    mEarphoneModeDAO = new EarphoneModeDAO(context);
-                    mEarphoneModeDAO.open();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                Boolean v = sharedPreferences.getBoolean("earphones_modes_activated", false);
+                if(v) {
+                    int state = intent.getIntExtra("state", -1);
+                    if(state >= 1) {
+                        mEarphoneModeDAO = new EarphoneModeDAO(context);
+                        mEarphoneModeDAO.open();
 
-                    List<EarphoneModeOptions> result = mEarphoneModeDAO.selectAll();
+                        List<EarphoneModeOptions> result = mEarphoneModeDAO.selectAll();
 
-                    if (result.size() != 0) {
-                        //create notification
-                        //TODO notification need to be "solid" & has to be destroy
+                        if (result.size() != 0) {
+                            //create notification
 
-                        //notification intent
-                        Intent notificationIntent = new Intent(context, EarphoneModeChooserActivity.class);
-                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            //notification intent
+                            Intent notificationIntent = new Intent(context, EarphoneModeChooserActivity.class);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-                        //notification
-                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
-                        notificationBuilder.setContentTitle(getResources().getString(R.string.earphone_notification_title));
-                        notificationBuilder.setContentText(getResources().getString(R.string.earphone_notification_subtitle));
-                        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
-                        notificationBuilder.setContentIntent(pendingIntent);
+                            //notification
+                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+                            notificationBuilder.setContentTitle(getResources().getString(R.string.earphone_notification_title));
+                            notificationBuilder.setContentText(getResources().getString(R.string.earphone_notification_subtitle));
+                            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+                            notificationBuilder.setContentIntent(pendingIntent);
 
-                        Notification notification = notificationBuilder.build();
-                        notification.flags = Notification.FLAG_ONGOING_EVENT;
+                            Notification notification = notificationBuilder.build();
+                            notification.flags = Notification.FLAG_ONGOING_EVENT;
 
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+                            mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
-                        notificationManager.notify(1, notification);
+                            mNotificationManager.notify(1, notification);
+                        }
+                    }
+                    else {
+                        try {
+                            mNotificationManager.cancel(1);
+                        }
+                        catch (Exception e) {}
                     }
                 }
             }

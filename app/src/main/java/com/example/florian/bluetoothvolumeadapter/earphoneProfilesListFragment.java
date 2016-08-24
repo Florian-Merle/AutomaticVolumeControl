@@ -1,9 +1,12 @@
 package com.example.florian.bluetoothvolumeadapter;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -12,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +37,9 @@ public class earphoneProfilesListFragment extends Fragment {
     private List<EarphoneModeOptions> mEarphoneModeList;
     private ListView mEarphoneModesListView;
     private ArrayAdapter<Object> mEarphoneModesArrayAdapter;
-    
-    // TODO need to add an option to enable or disable this part
+    private Switch mEarphoneModesActivatedSwitch;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
 
     @Nullable
     @Override
@@ -47,6 +53,30 @@ public class earphoneProfilesListFragment extends Fragment {
 
         mEarphoneModesListView = (ListView) view.findViewById(R.id.earphoneModesList);
         mEarphoneModesListView.setOnItemClickListener(mEarphoneModeClickListener);
+
+        mEarphoneModesActivatedSwitch = (Switch) view.findViewById(R.id.switchEarphoneModes);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        Boolean v = mSharedPreferences.getBoolean("earphones_modes_activated", false);
+        mEarphoneModesActivatedSwitch.setChecked(v);
+
+        mEarphoneModesActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mEditor = mSharedPreferences.edit();
+                mEditor.putBoolean("earphones_modes_activated",b);
+                mEditor.commit();
+
+                if (!b) {
+                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(getContext().NOTIFICATION_SERVICE);
+
+                    try {
+                        notificationManager.cancel(1);
+                    }
+                    catch (Exception e) {}
+                }
+            }
+        });
 
         updateListView();
 

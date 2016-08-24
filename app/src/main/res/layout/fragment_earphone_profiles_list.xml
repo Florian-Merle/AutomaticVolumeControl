@@ -7,10 +7,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/earphone_activate"
+        android:id="@+id/switchEarphoneModes"
+        android:textSize="17sp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/earphoneModesList"/>
+        android:id="@+id/earphoneModesList"
+        android:layout_below="@+id/switchEarphoneModes"/>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
