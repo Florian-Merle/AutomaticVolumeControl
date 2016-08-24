@@ -8,14 +8,21 @@ public abstract class DAOBase {
   protected final static String DATABASE_NAME = "database.db";
     
   protected SQLiteDatabase mDb = null;
-  protected DevicesDatabaseHandler mHandler = null;
+  protected DevicesDatabaseHandler mDeviceHandler = null;
+  protected EarphoneModesDatabaseHandler mEarphoneModeHandler = null;
     
   public DAOBase(Context pContext) {
-    this.mHandler = new DevicesDatabaseHandler(pContext, DATABASE_NAME, null, VERSION);
+    this.mDeviceHandler = new DevicesDatabaseHandler(pContext, DATABASE_NAME, null, VERSION);
+    this.mEarphoneModeHandler = new EarphoneModesDatabaseHandler(pContext, DATABASE_NAME, null, VERSION);
   }
-    
+
   public SQLiteDatabase open() {
-    mDb = mHandler.getWritableDatabase();
+    mDb = mDeviceHandler.getWritableDatabase();
+    return mDb;
+  }
+
+  public SQLiteDatabase openEarphoneModes() {
+    mDb = mEarphoneModeHandler.getWritableDatabase();
     return mDb;
   }
     

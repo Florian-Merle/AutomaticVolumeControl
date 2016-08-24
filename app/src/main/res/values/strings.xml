@@ -11,6 +11,11 @@
     <string name="remember_last_volume">Remember last volume</string>
     <string name="volume">Volume</string>
 
+    <!-- New Earphone Profile -->
+    <string name="earphone_title">New earphone profile</string>
+    <string name="earphone_name">Name of the profile</string>
+    <string name="earphone_problem">Problem while saving the mode</string>
+
     <!-- Service -->
     <string name="service_started">BVA has started</string>
     <string name="connected_to">Connected to</string>

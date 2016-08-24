@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private PageAdapter mAdapter;
     private Toolbar mToolbar;
+
     private BluetoothAdapter mBluetoothAdapter;
 
     @Override
@@ -64,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         this.startService(i);
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -83,5 +82,10 @@ public class MainActivity extends AppCompatActivity {
     public void action_settings(View view) {
         Intent intent = new Intent(this , SettingsActivity.class);
         startActivity(intent);
+    }
+
+    public void action_new_earphone_mode(View view) {
+        earphoneProfilesListFragment f = (earphoneProfilesListFragment) mAdapter.getEarphoneProfilesListFragment();
+        f.action_new_earphone_mode(view);
     }
 }
