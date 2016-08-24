@@ -32,6 +32,8 @@ public class earphoneProfilesListFragment extends Fragment {
     private List<EarphoneModeOptions> mEarphoneModeList;
     private ListView mEarphoneModesListView;
     private ArrayAdapter<Object> mEarphoneModesArrayAdapter;
+    
+    // TODO need to add an option to enable or disable this part
 
     @Nullable
     @Override

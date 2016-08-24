@@ -22,6 +22,7 @@
     <!-- Notifications -->
     <string name="earphone_notification_title">Earphone connected</string>
     <string name="earphone_notification_subtitle">Choose an earphone profile</string>
+    <string name="choose_earphone_mode">Choose earphone mode</string>
 
     <!-- Service -->
     <string name="service_started">BVA has started</string>

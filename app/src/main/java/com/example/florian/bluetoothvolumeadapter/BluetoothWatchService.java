@@ -103,17 +103,25 @@ public class BluetoothWatchService extends Service {
 
                     if (result.size() != 0) {
                         //create notification
-                        //TODO notification need to launch the chooser activity
+                        //TODO notification need to be "solid" & has to be destroy
 
+                        //notification intent
+                        Intent notificationIntent = new Intent(context, EarphoneModeChooserActivity.class);
+                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+                        //notification
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
                         notificationBuilder.setContentTitle(getResources().getString(R.string.earphone_notification_title));
                         notificationBuilder.setContentText(getResources().getString(R.string.earphone_notification_subtitle));
                         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+                        notificationBuilder.setContentIntent(pendingIntent);
 
                         Notification notification = notificationBuilder.build();
+                        notification.flags = Notification.FLAG_ONGOING_EVENT;
 
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
                         notificationManager.notify(1, notification);
                     }
