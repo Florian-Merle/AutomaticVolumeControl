@@ -118,7 +118,7 @@ public class BluetoothWatchService extends Service {
     private void deviceDisconnected(BluetoothDevice bluetoothDevice) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean showToasts = prefs.getBoolean("show_toasts", false);
-        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from), Toast.LENGTH_SHORT).show(); }
+        if (showToasts) { Toast.makeText(this,getResources().getString(R.string.disconnected_from) + " " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show(); }
 
         mDeviceDAO = new DeviceDAO(this);
         mDeviceDAO.open();
