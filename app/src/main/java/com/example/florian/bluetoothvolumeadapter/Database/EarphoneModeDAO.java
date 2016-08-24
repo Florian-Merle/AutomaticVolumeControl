@@ -30,19 +30,25 @@ public class EarphoneModeDAO extends DAOBase {
         mDb.delete(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME, EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME + " = ?", new String[] {String.valueOf(id)});
     }
 
-    public int update(EarphoneModeOptions d) {
+    public Boolean update(String id, EarphoneModeOptions d) {
         ContentValues values = new ContentValues();
 
         values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME, d.getName());
         values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_VOLUME, d.getVolume());
 
         String where = EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME + " = ?";
-        String[] whereArgs = {d.getName() };
+        String[] whereArgs = {id };
 
-        return mDb.update(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME,
-                values,
-                where,
-                whereArgs);
+        try {
+            mDb.update(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME,
+                    values,
+                    where,
+                    whereArgs);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
     public EarphoneModeOptions select(String id) {
