@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Bluetooth Volume Adapter</string>
 
+    <!-- Main Activity -->
+    <string name="bt_devices">Bluetooth Devices</string>
+    <string name="earphone_modes">Earphone Modes</string>
+
     <!-- Edit Device Behavior -->
     <string name="edb_title">Edit device</string>
     <string name="activate_device">Activate device</string>
@@ -15,8 +19,8 @@
     <!-- preferences -->
     <string name="settings">Settings</string>
     <string name="showUi">Show UI</string>
-    <string name="showToast">Toast</string>
-    <string name="showToastSum">Display when a device is connected or disconnected</string>
-    <string name="showAudioManagerUI">Audio Manager</string>
-    <string name="showAudioManagerUISum">Show Audio Manager UI</string>
+    <string name="showToast">Popup</string>
+    <string name="showToastSum">Display a popup when a device is connected or disconnected</string>
+    <string name="showAudioManagerUI">Audio Mixer</string>
+    <string name="showAudioManagerUISum">Show Audio mixer UI</string>
 </resources>
