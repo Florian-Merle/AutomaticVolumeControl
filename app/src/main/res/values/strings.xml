@@ -19,6 +19,10 @@
     <string name="delete">Delete</string>
     <string name="confirm_delete_earphone_mode">Are you sure you want to delete this mode?</string>
 
+    <!-- Notifications -->
+    <string name="earphone_notification_title">Earphone connected</string>
+    <string name="earphone_notification_subtitle">Choose an earphone profile</string>
+
     <!-- Service -->
     <string name="service_started">BVA has started</string>
     <string name="connected_to">Connected to</string>

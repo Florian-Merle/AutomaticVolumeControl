@@ -39,7 +39,7 @@ public class earphoneProfilesListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_earphone_profiles_list, container, false);
 
         mEarphoneModeDAO = new EarphoneModeDAO(getContext());
-        mEarphoneModeDAO.openEarphoneModes();
+        mEarphoneModeDAO.open();
 
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 

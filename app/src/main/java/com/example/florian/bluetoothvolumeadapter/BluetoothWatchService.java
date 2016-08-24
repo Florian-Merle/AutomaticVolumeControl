@@ -1,5 +1,8 @@
 package com.example.florian.bluetoothvolumeadapter;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothDevice;
@@ -12,14 +15,18 @@ import android.media.AudioManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
 import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
+import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeDAO;
+import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeOptions;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Florian on 20/08/2016.
@@ -29,6 +36,9 @@ public class BluetoothWatchService extends Service {
 
     private DeviceDAO mDeviceDAO;
     private AudioManager mAudioManager;
+
+    private EarphoneModeDAO mEarphoneModeDAO;
+    private boolean mConnected = false;
 
     @Nullable
     @Override
@@ -40,6 +50,7 @@ public class BluetoothWatchService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         IntentFilter filter = new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
         filter.addAction(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED);
+        filter.addAction(Intent.ACTION_HEADSET_PLUG);
         this.registerReceiver(mReceiver, filter);
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -59,7 +70,6 @@ public class BluetoothWatchService extends Service {
 
     //bluetooth broadcast receiver
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public boolean mConnected = false;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -80,6 +90,33 @@ public class BluetoothWatchService extends Service {
                 if(state == BluetoothA2dp.STATE_DISCONNECTED) {
                     mConnected = false;
                     deviceDisconnected(d);
+                }
+            }
+            else if(Intent.ACTION_HEADSET_PLUG.equals(action)) {
+                //TODO check if user has activated the option
+                int state = intent.getIntExtra("state", -1);
+                if(state >= 1) {
+                    mEarphoneModeDAO = new EarphoneModeDAO(context);
+                    mEarphoneModeDAO.open();
+
+                    List<EarphoneModeOptions> result = mEarphoneModeDAO.selectAll();
+
+                    if (result.size() != 0) {
+                        //create notification
+                        //TODO notification need to launch the chooser activity
+
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+                        notificationBuilder.setContentTitle(getResources().getString(R.string.earphone_notification_title));
+                        notificationBuilder.setContentText(getResources().getString(R.string.earphone_notification_subtitle));
+                        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+
+                        Notification notification = notificationBuilder.build();
+
+
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                        notificationManager.notify(1, notification);
+                    }
                 }
             }
         }

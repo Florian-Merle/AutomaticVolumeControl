@@ -17,45 +17,45 @@ public class DeviceDAO extends DAOBase{
     public long insert(DeviceOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdress());
-        values.put(DevicesDatabaseHandler.DEVICE_NAME, d.getName());
-        values.put(DevicesDatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
-        values.put(DevicesDatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
-        values.put(DevicesDatabaseHandler.DEVICE_VOLUME, d.getVolume());
+        values.put(DatabaseHandler.DEVICE_ADRESS, d.getAdress());
+        values.put(DatabaseHandler.DEVICE_NAME, d.getName());
+        values.put(DatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
+        values.put(DatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
+        values.put(DatabaseHandler.DEVICE_VOLUME, d.getVolume());
 
-        return mDb.insert(DevicesDatabaseHandler.DEVICE_TABLE_NAME, null, values);
+        return mDb.insert(DatabaseHandler.DEVICE_TABLE_NAME, null, values);
     }
 
     public void delete(String id) {
-        mDb.delete(DevicesDatabaseHandler.DEVICE_TABLE_NAME, DevicesDatabaseHandler.DEVICE_ADRESS + " = ?", new String[] {String.valueOf(id)});
+        mDb.delete(DatabaseHandler.DEVICE_TABLE_NAME, DatabaseHandler.DEVICE_ADRESS + " = ?", new String[] {String.valueOf(id)});
     }
 
     public int update(DeviceOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(DevicesDatabaseHandler.DEVICE_ADRESS, d.getAdress());
-        values.put(DevicesDatabaseHandler.DEVICE_NAME, d.getName());
-        values.put(DevicesDatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
-        values.put(DevicesDatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
-        values.put(DevicesDatabaseHandler.DEVICE_VOLUME, d.getVolume());
+        values.put(DatabaseHandler.DEVICE_ADRESS, d.getAdress());
+        values.put(DatabaseHandler.DEVICE_NAME, d.getName());
+        values.put(DatabaseHandler.DEVICE_ACTIVATED, d.getActivated());
+        values.put(DatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME, d.getRememberLastVolume());
+        values.put(DatabaseHandler.DEVICE_VOLUME, d.getVolume());
 
-        String where = DevicesDatabaseHandler.DEVICE_ADRESS + " = ?";
+        String where = DatabaseHandler.DEVICE_ADRESS + " = ?";
         String[] whereArgs = {d.getAdress() };
 
-        return mDb.update(DevicesDatabaseHandler.DEVICE_TABLE_NAME,
+        return mDb.update(DatabaseHandler.DEVICE_TABLE_NAME,
                 values,
                 where,
                 whereArgs);
     }
 
     public DeviceOptions select(String id) {
-        Cursor c = mDb.query(DevicesDatabaseHandler.DEVICE_TABLE_NAME,
-                new String[] {DevicesDatabaseHandler.DEVICE_ADRESS,
-                              DevicesDatabaseHandler.DEVICE_NAME,
-                              DevicesDatabaseHandler.DEVICE_ACTIVATED,
-                              DevicesDatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME,
-                              DevicesDatabaseHandler.DEVICE_VOLUME},
-                DevicesDatabaseHandler.DEVICE_ADRESS+ " LIKE \"" + id +"\"",
+        Cursor c = mDb.query(DatabaseHandler.DEVICE_TABLE_NAME,
+                new String[] {DatabaseHandler.DEVICE_ADRESS,
+                              DatabaseHandler.DEVICE_NAME,
+                              DatabaseHandler.DEVICE_ACTIVATED,
+                              DatabaseHandler.DEVICE_REMEMBER_LAST_VOLUME,
+                              DatabaseHandler.DEVICE_VOLUME},
+                DatabaseHandler.DEVICE_ADRESS+ " LIKE \"" + id +"\"",
                 null, null, null, null);
         return cursorToDeviceOptions(c);
     }

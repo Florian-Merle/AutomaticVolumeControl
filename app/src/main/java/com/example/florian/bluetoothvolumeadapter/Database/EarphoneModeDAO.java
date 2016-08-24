@@ -20,27 +20,27 @@ public class EarphoneModeDAO extends DAOBase {
     public long insert(EarphoneModeOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME, d.getName());
-        values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_VOLUME, d.getVolume());
+        values.put(DatabaseHandler.EARPHONE_MODE_NAME, d.getName());
+        values.put(DatabaseHandler.EARPHONE_MODE_VOLUME, d.getVolume());
 
-        return mDb.insert(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME, null, values);
+        return mDb.insert(DatabaseHandler.EARPHONE_MODE_TABLE_NAME, null, values);
     }
 
     public void delete(String id) {
-        mDb.delete(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME, EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME + " = ?", new String[] {String.valueOf(id)});
+        mDb.delete(DatabaseHandler.EARPHONE_MODE_TABLE_NAME, DatabaseHandler.EARPHONE_MODE_NAME + " = ?", new String[] {String.valueOf(id)});
     }
 
     public Boolean update(String id, EarphoneModeOptions d) {
         ContentValues values = new ContentValues();
 
-        values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME, d.getName());
-        values.put(EarphoneModesDatabaseHandler.EARPHONE_MODE_VOLUME, d.getVolume());
+        values.put(DatabaseHandler.EARPHONE_MODE_NAME, d.getName());
+        values.put(DatabaseHandler.EARPHONE_MODE_VOLUME, d.getVolume());
 
-        String where = EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME + " = ?";
+        String where = DatabaseHandler.EARPHONE_MODE_NAME + " = ?";
         String[] whereArgs = {id };
 
         try {
-            mDb.update(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME,
+            mDb.update(DatabaseHandler.EARPHONE_MODE_TABLE_NAME,
                     values,
                     where,
                     whereArgs);
@@ -52,10 +52,10 @@ public class EarphoneModeDAO extends DAOBase {
     }
 
     public EarphoneModeOptions select(String id) {
-        Cursor c = mDb.query(EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME,
-                new String[] {EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME,
-                        EarphoneModesDatabaseHandler.EARPHONE_MODE_VOLUME},
-                EarphoneModesDatabaseHandler.EARPHONE_MODE_NAME+ " LIKE \"" + id +"\"",
+        Cursor c = mDb.query(DatabaseHandler.EARPHONE_MODE_TABLE_NAME,
+                new String[] {DatabaseHandler.EARPHONE_MODE_NAME,
+                        DatabaseHandler.EARPHONE_MODE_VOLUME},
+                DatabaseHandler.EARPHONE_MODE_NAME+ " LIKE \"" + id +"\"",
                 null, null, null, null);
         return cursorToEarphoneModeOptions(c);
     }
@@ -63,7 +63,7 @@ public class EarphoneModeDAO extends DAOBase {
     public List<EarphoneModeOptions> selectAll() {
         List<EarphoneModeOptions> list = new ArrayList<EarphoneModeOptions>();
 
-        Cursor c = mDb.rawQuery("SELECT * FROM "+EarphoneModesDatabaseHandler.EARPHONE_MODE_TABLE_NAME, null);
+        Cursor c = mDb.rawQuery("SELECT * FROM "+DatabaseHandler.EARPHONE_MODE_TABLE_NAME, null);
 
         c.moveToFirst();
 
