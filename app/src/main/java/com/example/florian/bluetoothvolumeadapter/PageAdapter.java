@@ -14,7 +14,7 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     public PageAdapter(FragmentManager fm) {
         super(fm);
         mBluetoothDevicesListFragment = new bluetoothDevicesListFragment();
-        mEarphoneProfilesListFragment = new bluetoothDevicesListFragment();
+        mEarphoneProfilesListFragment = new earphoneProfilesListFragment();
     }
 
     @Override
