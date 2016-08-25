@@ -2,17 +2,27 @@ package com.example.florian.bluetoothvolumeadapter;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
+import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
 
 import java.util.Set;
 
@@ -24,6 +34,9 @@ public class bluetoothDevicesListFragment extends Fragment {
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter mPairedDevicesArrayAdapter;
     private ListView mPairedDevicesListView;
+    private DeviceDAO mDeviceDAO;
+    private DeviceOptions mDevice;
+    private int mDefaultVolumeValue = 0;
 
     @Nullable
     @Override
@@ -48,12 +61,70 @@ public class bluetoothDevicesListFragment extends Fragment {
             String name = info[0];
             String address = info[1];
 
-            Intent intent = new Intent(getContext() , EditDeviceBehaviorActivity.class);
-            intent.putExtra(MainActivity.EXTRA_DEVICE_ADDRESS, address);
-            intent.putExtra(MainActivity.EXTRA_DEVICE_NAME, name);
-            startActivity(intent);
+            action_update_bt_device(address, name);
         }
     };
+
+    private void action_update_bt_device(String address, String name) {
+        mDeviceDAO = new DeviceDAO(getContext());
+        mDeviceDAO.open();
+
+        mDevice = mDeviceDAO.select(address);
+        if(mDevice == null) { // create device in database
+            mDevice = new DeviceOptions(address, name);
+            mDevice.setVolume(mDefaultVolumeValue);
+            mDeviceDAO.insert(mDevice);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getResources().getString(R.string.edb_title));
+
+        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_edit_device_behavior, null);
+
+        final Switch activateDevice = (Switch) v.findViewById(R.id.activateDevice);
+        activateDevice.setChecked(mDevice.getActivated() != 0);
+        final Switch rememberVolume = (Switch) v.findViewById(R.id.rememberVolume);
+        rememberVolume.setChecked(mDevice.getRememberLastVolume() != 0);
+        final SeekBar seekbar = (SeekBar) v.findViewById(R.id.volumeSeekBar);
+        seekbar.setProgress(mDevice.getVolume());
+
+        AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        int max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+        seekbar.setMax(max);
+        seekbar.setProgress(mDevice.getVolume());
+
+        builder.setView(v);
+
+        builder.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Boolean activateDeviceValue = activateDevice.isChecked();
+                Boolean rememberVolumeValue = rememberVolume.isChecked();
+                int volume = seekbar.getProgress();
+
+                update_device(activateDeviceValue, rememberVolumeValue, volume);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.show();
+    }
+
+    private void update_device(Boolean activateDeviceValue, Boolean rememberVolumeValue, int volume) {
+        mDevice.setActivated((activateDeviceValue) ? 1 : 0);
+        mDevice.setRememberLastVolume((rememberVolumeValue) ? 1 : 0);
+        mDevice.setVolume(volume);
+        mDeviceDAO.update(mDevice);
+    }
 
     public void searchPairedDevices() {
         mPairedDevicesArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.device_name);
