@@ -32,15 +32,13 @@ import java.util.List;
  * Created by Florian on 20/08/2016.
  */
 public class BluetoothWatchService extends Service {
-    //TODO Save connected
-
-    public static final String STORAGE_FILE = "BVA_volume_file";
+    public static final String STORAGE_VOLUME_FILE = "BVA_volume_file";
+    public static final String STORAGE_CONNECTED_FILE = "BVA_connected_file";
 
     private DeviceDAO mDeviceDAO;
     private AudioManager mAudioManager;
 
     private EarphoneModeDAO mEarphoneModeDAO;
-    private boolean mConnected = false;
 
     @Nullable
     @Override
@@ -61,6 +59,7 @@ public class BluetoothWatchService extends Service {
 
     @Override
     public void onCreate() {
+        setConnected(false);
     }
 
     @Override
@@ -81,16 +80,16 @@ public class BluetoothWatchService extends Service {
             if(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED.equals(action)) {
                 int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
                 if(state == BluetoothA2dp.STATE_PLAYING) {
-                    if (mConnected == false) {
+                    if (getConnected() == false) {
                         deviceConnected(d);
-                        mConnected = true;
+                        setConnected(true);
                     }
                 }
             }
             else if(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
                 int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
                 if(state == BluetoothA2dp.STATE_DISCONNECTED) {
-                    mConnected = false;
+                    setConnected(false);
                     deviceDisconnected(d);
                 }
             }
@@ -184,7 +183,7 @@ public class BluetoothWatchService extends Service {
 
     private void saveLastVolume(int v) {
         try {
-            FileOutputStream fos = openFileOutput(STORAGE_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(STORAGE_VOLUME_FILE, Context.MODE_PRIVATE);
             fos.write((v+"").getBytes());
             fos.close();
         } catch (IOException e) {
@@ -194,7 +193,7 @@ public class BluetoothWatchService extends Service {
 
     private int getLastVolume() {
         try {
-            FileInputStream fis = openFileInput(STORAGE_FILE);
+            FileInputStream fis = openFileInput(STORAGE_VOLUME_FILE);
             int ch;
             StringBuilder sb = new StringBuilder();
             while ((ch = fis.read()) != -1) {
@@ -207,6 +206,37 @@ public class BluetoothWatchService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    private void setConnected(boolean v) {
+        int value = 0;
+        if (v) { value = 1; }
+
+        try {
+            FileOutputStream fos = openFileOutput(STORAGE_CONNECTED_FILE, Context.MODE_PRIVATE);
+            fos.write((value+"").getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean getConnected() {
+        try {
+            FileInputStream fis = openFileInput(STORAGE_CONNECTED_FILE);
+            int ch;
+            StringBuilder sb = new StringBuilder();
+            while ((ch = fis.read()) != -1) {
+                sb.append((char) ch);
+            }
+
+            fis.close();
+            return Integer.parseInt(sb.toString()) != 0;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
