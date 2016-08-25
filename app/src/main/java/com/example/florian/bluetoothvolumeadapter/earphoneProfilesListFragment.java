@@ -259,4 +259,11 @@ public class earphoneProfilesListFragment extends Fragment {
                 .setNegativeButton(getResources().getString(android.R.string.no), null)
                 .show();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        getContext().unregisterReceiver(mReceiver);
+    }
 }

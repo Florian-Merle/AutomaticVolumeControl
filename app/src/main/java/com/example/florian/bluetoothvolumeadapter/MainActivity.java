@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TabHost;
+import android.widget.Toast;
 
 /**
  * Created by Florian on 24/08/2016.
@@ -58,9 +60,15 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
+        Intent intent = getIntent();
+        int tabToOpen = intent.getIntExtra("tab", -1);
+        if (tabToOpen!=-1) {
+            mTabLayout.getTabAt(1).select();
+        }
+
         //START SERVICE IF NOT STARTED
-        Intent i = new Intent(this, BluetoothWatchService.class);
-        this.startService(i);
+        Intent serviceIntent = new Intent(this, BluetoothWatchService.class);
+        this.startService(serviceIntent);
     }
 
     @Override

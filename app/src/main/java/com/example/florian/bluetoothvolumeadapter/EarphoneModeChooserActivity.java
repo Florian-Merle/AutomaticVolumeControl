@@ -2,11 +2,14 @@ package com.example.florian.bluetoothvolumeadapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,12 +24,13 @@ import java.util.List;
 /**
  * Created by Florian on 24/08/2016.
  */
-public class EarphoneModeChooserActivity extends Activity {
+public class EarphoneModeChooserActivity extends ActionBarActivity {
     private EarphoneModeDAO mEarphoneModeDAO;
     private AudioManager mAudioManager;
     private ListView mEarphoneModesListView;
     private List<EarphoneModeOptions> mEarphoneModeList;
     private ArrayAdapter<Object> mEarphoneModesArrayAdapter;
+    private Toolbar mToolbar;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,12 @@ public class EarphoneModeChooserActivity extends Activity {
 
         mEarphoneModeDAO = new EarphoneModeDAO(this);
         mEarphoneModeDAO.open();
+
+        /* tool bar */
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setTitle(R.string.choose_earphone_mode);
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -81,5 +91,11 @@ public class EarphoneModeChooserActivity extends Activity {
 
     private void stop() {
         this.finishAffinity();
+    }
+
+    public void action_edit_modes(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("tab", 1);
+        startActivity(intent);
     }
 }
