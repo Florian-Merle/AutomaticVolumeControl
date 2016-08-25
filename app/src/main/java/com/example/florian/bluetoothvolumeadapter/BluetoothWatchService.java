@@ -32,6 +32,8 @@ import java.util.List;
  * Created by Florian on 20/08/2016.
  */
 public class BluetoothWatchService extends Service {
+    //TODO Save connected
+
     public static final String STORAGE_FILE = "BVA_volume_file";
 
     private DeviceDAO mDeviceDAO;
@@ -39,8 +41,6 @@ public class BluetoothWatchService extends Service {
 
     private EarphoneModeDAO mEarphoneModeDAO;
     private boolean mConnected = false;
-
-    private NotificationManager mNotificationManager;
 
     @Nullable
     @Override

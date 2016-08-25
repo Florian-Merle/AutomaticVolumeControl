@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bluetooth Volume Adapter</string>
+    <string name="app_name">Automatic Volume Control</string>
 
     <!-- Main Activity -->
     <string name="bt_devices">Bluetooth Devices</string>
