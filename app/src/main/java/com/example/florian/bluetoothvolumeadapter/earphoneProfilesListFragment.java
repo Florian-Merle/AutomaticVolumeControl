@@ -1,8 +1,11 @@
 package com.example.florian.bluetoothvolumeadapter;
 
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -40,8 +44,7 @@ public class earphoneProfilesListFragment extends Fragment {
     private Switch mEarphoneModesActivatedSwitch;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-
-    //TODO if earphones connected and switch set from disable to enable --> create notification
+    private boolean mEarphoneModesNeedNotification = false;
 
     @Nullable
     @Override
@@ -63,27 +66,58 @@ public class earphoneProfilesListFragment extends Fragment {
         mEarphoneModesActivatedSwitch.setChecked(v);
 
         mEarphoneModesActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mEditor = mSharedPreferences.edit();
                 mEditor.putBoolean("earphones_modes_activated",b);
                 mEditor.commit();
 
-                if (!b) {
-                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(getContext().NOTIFICATION_SERVICE);
-
-                    try {
-                        notificationManager.cancel(1);
-                    }
-                    catch (Exception e) {}
+                if (b && mEarphoneModesNeedNotification) {
+                    EarphoneModeChooserNotificationManager.createNotification(getContext());
+                }
+                else {
+                    EarphoneModeChooserNotificationManager.deleteNotification(getContext());
                 }
             }
         });
+
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        getContext().registerReceiver(mReceiver, filter);
 
         updateListView();
 
         return view;
     }
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if(Intent.ACTION_HEADSET_PLUG.equals(action)) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                Boolean v = sharedPreferences.getBoolean("earphones_modes_activated", false);
+                if(v) {
+                    int state = intent.getIntExtra("state", -1);
+                    if(state >= 1) {
+                        mEarphoneModeDAO = new EarphoneModeDAO(context);
+                        mEarphoneModeDAO.open();
+
+                        List<EarphoneModeOptions> result = mEarphoneModeDAO.selectAll();
+
+                        if (result.size() != 0) {
+                            mEarphoneModesNeedNotification = true;
+                        }
+                    }
+                    else {
+                        mEarphoneModesNeedNotification = false;
+                    }
+                }
+            }
+        }
+    };
 
     private AdapterView.OnItemClickListener mEarphoneModeClickListener
             = new AdapterView.OnItemClickListener() {
@@ -106,6 +140,7 @@ public class earphoneProfilesListFragment extends Fragment {
 
         final EditText editText = (EditText) v.findViewById(R.id.earphoneName);
         editText.setText(emo.getName());
+        editText.setSelection(editText.length());
 
         final SeekBar seekbar = (SeekBar) v.findViewById(R.id.earphoneVolume);
         int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -136,7 +171,10 @@ public class earphoneProfilesListFragment extends Fragment {
             }
         });
 
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.show();
     }
 
     public void action_new_earphone_mode(View view) {

@@ -107,33 +107,11 @@ public class BluetoothWatchService extends Service {
 
                         if (result.size() != 0) {
                             //create notification
-
-                            //notification intent
-                            Intent notificationIntent = new Intent(context, EarphoneModeChooserActivity.class);
-                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-
-                            //notification
-                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
-                            notificationBuilder.setContentTitle(getResources().getString(R.string.earphone_notification_title));
-                            notificationBuilder.setContentText(getResources().getString(R.string.earphone_notification_subtitle));
-                            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
-                            notificationBuilder.setContentIntent(pendingIntent);
-
-                            Notification notification = notificationBuilder.build();
-                            notification.flags = Notification.FLAG_ONGOING_EVENT;
-
-                            mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-                            mNotificationManager.notify(1, notification);
+                            EarphoneModeChooserNotificationManager.createNotification(context);
                         }
                     }
                     else {
-                        try {
-                            mNotificationManager.cancel(1);
-                        }
-                        catch (Exception e) {}
+                        EarphoneModeChooserNotificationManager.deleteNotification(context);
                     }
                 }
             }
