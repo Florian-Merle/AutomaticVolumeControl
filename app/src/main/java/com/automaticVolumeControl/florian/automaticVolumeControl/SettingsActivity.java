@@ -1,4 +1,4 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

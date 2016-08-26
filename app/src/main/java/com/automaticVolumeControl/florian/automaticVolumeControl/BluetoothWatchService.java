@@ -1,8 +1,5 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothDevice;
@@ -15,13 +12,12 @@ import android.media.AudioManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
-import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
-import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeDAO;
-import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeOptions;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.DeviceDAO;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.DeviceOptions;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.EarphoneModeDAO;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.EarphoneModeOptions;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

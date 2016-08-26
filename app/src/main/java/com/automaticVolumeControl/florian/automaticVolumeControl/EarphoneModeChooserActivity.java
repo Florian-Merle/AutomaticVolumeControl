@@ -1,6 +1,5 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeDAO;
-import com.example.florian.bluetoothvolumeadapter.Database.EarphoneModeOptions;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.EarphoneModeDAO;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.EarphoneModeOptions;
 
 import java.util.List;
 

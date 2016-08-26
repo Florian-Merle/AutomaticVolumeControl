@@ -1,4 +1,4 @@
-package com.example.florian.bluetoothvolumeadapter.Database;
+package com.automaticVolumeControl.florian.automaticVolumeControl.Database;
 
 /**
  * Created by Florian on 11/08/2016.

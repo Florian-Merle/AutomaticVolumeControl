@@ -1,10 +1,9 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,10 +20,9 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
-import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.DeviceDAO;
+import com.automaticVolumeControl.florian.automaticVolumeControl.Database.DeviceOptions;
 
 import java.util.Set;
 

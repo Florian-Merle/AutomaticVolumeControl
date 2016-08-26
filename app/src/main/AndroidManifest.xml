@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.florian.bluetoothvolumeadapter">
+    package="com.automaticVolumeControl.florian.automaticVolumeControl">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.automaticVolumeControl.florian.automaticVolumeControl.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,18 +22,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingsActivity">
+        <activity android:name="com.automaticVolumeControl.florian.automaticVolumeControl.SettingsActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.automaticVolumeControl.florian.automaticVolumeControl.MainActivity"/>
         </activity>
 
-        <activity android:name=".EarphoneModeChooserActivity">
+        <activity android:name="com.automaticVolumeControl.florian.automaticVolumeControl.EarphoneModeChooserActivity">
         </activity>
 
-        <service android:name=".BluetoothWatchService"/>
+        <service android:name="com.automaticVolumeControl.florian.automaticVolumeControl.BluetoothWatchService"/>
 
         <!-- Declaring broadcast receiver for BOOT_COMPLETED event -->
-        <receiver android:name=".BootReceiver" android:enabled="true" android:exported="false">
+        <receiver android:name="com.automaticVolumeControl.florian.automaticVolumeControl.BootReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

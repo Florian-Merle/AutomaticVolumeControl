@@ -1,4 +1,4 @@
-package com.example.florian.bluetoothvolumeadapter.Database;
+package com.automaticVolumeControl.florian.automaticVolumeControl.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

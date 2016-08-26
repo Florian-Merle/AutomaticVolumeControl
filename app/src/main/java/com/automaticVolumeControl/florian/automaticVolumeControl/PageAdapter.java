@@ -1,4 +1,4 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

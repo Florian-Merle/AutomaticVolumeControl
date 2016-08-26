@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.example.florian.bluetoothvolumeadapter.MainActivity">
+    tools:context="com.automaticVolumeControl.florian.automaticVolumeControl.MainActivity">
 
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar">
         <fragment
-            android:name="com.example.florian.bluetoothvolumeadapter.SettingsFragment"
+            android:name="com.automaticVolumeControl.florian.automaticVolumeControl.SettingsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/settings_fragment"/>

@@ -1,4 +1,4 @@
-package com.example.florian.bluetoothvolumeadapter;
+package com.automaticVolumeControl.florian.automaticVolumeControl;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -10,8 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TabHost;
-import android.widget.Toast;
 
 /**
  * Created by Florian on 24/08/2016.
