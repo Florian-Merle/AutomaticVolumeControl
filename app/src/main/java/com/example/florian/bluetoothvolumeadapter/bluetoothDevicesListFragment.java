@@ -16,10 +16,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.florian.bluetoothvolumeadapter.Database.DeviceDAO;
 import com.example.florian.bluetoothvolumeadapter.Database.DeviceOptions;
@@ -93,6 +95,14 @@ public class bluetoothDevicesListFragment extends Fragment {
 
         seekbar.setMax(max);
         seekbar.setProgress(mDevice.getVolume());
+
+        activateDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                rememberVolume.setEnabled(b);
+                seekbar.setEnabled(b);
+            }
+        });
 
         builder.setView(v);
 
