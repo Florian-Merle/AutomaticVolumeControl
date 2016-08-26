@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Automatic Volume Control</string>
+
+    <!-- Main Activity -->
+    <string name="bt_devices">Appareils Bluetooth</string>
+    <string name="earphone_modes">Profils pour écouteurs</string>
+
+    <!-- Edit Device Behavior -->
+    <string name="edb_title">Editer le profil de l\'appareil</string>
+    <string name="activate_device">Activer l\'appareil</string>
+    <string name="remember_last_volume">Se souvenir du dernier volume</string>
+    <string name="volume">Volume</string>
+
+    <!-- Earphone Profile -->
+    <string name="earphone_title_new">Nouveau profil pour écouteurs</string>
+    <string name="earphone_title_edit">Editer profil pour écouteurs</string>
+    <string name="earphone_name">Nom du profil</string>
+    <string name="earphone_problem">Erreur lors de la sauvegarde du profil</string>
+    <string name="earphone_activate">Activer les profils pour écouteurs</string>
+    <string name="delete">Supprimer</string>
+    <string name="confirm_delete_earphone_mode">Etes-vous sure de vouloir supprimer ce profil?</string>
+    <string name="earphone_modes_edit">Editer les profils</string>
+
+    <!-- Notifications -->
+    <string name="earphone_notification_title">Ecouteurs connectés</string>
+    <string name="earphone_notification_subtitle">Choisissez un profil d\'écouteurs</string>
+    <string name="choose_earphone_mode">Choisissez un profil d\'écouteurs</string>
+
+    <!-- Service -->
+    <string name="service_started">AVC a démarré</string>
+    <string name="connected_to">Connecté à</string>
+    <string name="disconnected_from">Déconnecté de</string>
+
+    <!-- preferences -->
+    <string name="settings">Paramètres</string>
+    <string name="showUi">Interfaces</string>
+    <string name="showToast">Popup</string>
+    <string name="showToastSum">Affiche une popup quand un appareil est connecté ou déconnecté</string>
+    <string name="showAudioManagerUI">Mixer Audio</string>
+    <string name="showAudioManagerUISum">Affiche l\'interface du mixer audio</string>
+</resources>
