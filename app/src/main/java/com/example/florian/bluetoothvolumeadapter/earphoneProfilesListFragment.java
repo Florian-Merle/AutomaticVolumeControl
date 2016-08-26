@@ -1,6 +1,5 @@
 package com.example.florian.bluetoothvolumeadapter;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -184,6 +183,7 @@ public class earphoneProfilesListFragment extends Fragment {
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_earphone_profile_new, null);
 
         final EditText editText = (EditText) v.findViewById(R.id.earphoneName);
+        editText.setSelection(editText.length());
 
         final SeekBar seekbar = (SeekBar) v.findViewById(R.id.earphoneVolume);
         int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
