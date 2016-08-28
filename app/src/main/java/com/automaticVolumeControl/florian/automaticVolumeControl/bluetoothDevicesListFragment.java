@@ -88,6 +88,11 @@ public class bluetoothDevicesListFragment extends Fragment {
         final SeekBar seekbar = (SeekBar) v.findViewById(R.id.volumeSeekBar);
         seekbar.setProgress(mDevice.getVolume());
 
+        if(mDevice.getActivated() == 0) {
+            rememberVolume.setEnabled(false);
+            seekbar.setEnabled(false);
+        }
+
         AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         int max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
